@@ -1,0 +1,97 @@
+<html>
+ <h1>display all the link！</h1>
+  
+  <div>
+    <input id="type" value="text">select type </input>
+    <input id="lowrange" value="6">low scope</input>
+    <input id="highrange" value="7">high scope</input>
+    <button id="commit" onclick=refreshlink()>get the link</button>
+    <p>webaddress list:</p>
+
+    <table id="table" border='1'>
+      <tr>
+        <th>address</th>
+        <th>score</th>
+      </tr>
+    </table>
+    </div>
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous">
+  
+  </script>
+  
+ <script>
+  async function refreshlink(){
+  var low = document.getElementById("lowrange").value
+  var high = document.getElementById("highrange").value
+    const list= document.querySelectorAll("[id='data']")
+    for(x of list)
+      {
+        x.remove()
+      }
+    await getlink(low,high)
+  }
+   
+  async function getlink(low,high){
+
+  console.log("start!")
+  console.log("low is:"+low+"type is:"+typeof(low))
+  console.log("high is:" +high)
+
+  if(high == 0)
+{
+  var range = {
+  low: document.getElementById("lowrange").value,
+  high: document.getElementById("highrange").value
+}}
+    else
+  {
+    var range = {
+  low: low,
+  high: high
+}
+  }
+
+let response = await fetch('https://djangolearn1.yunfengwu.repl.co/weblist/linkdisplay/', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8'
+  },
+  body: JSON.stringify(range)
+});
+  links =await response.json();
+  const tbl =document.getElementById("table")
+
+  for(let x of links["weblist"]){
+   let tr = tbl.insertRow();
+   tr.id = "data"
+
+  let cell_title = tr.insertCell()
+  
+  let add = document.createElement("a")
+  add.href = x.address
+  if(x.title == ' ')
+  {
+    add.text = "unknow!"
+  }
+  else
+  {
+   add.text =x.title  
+  }
+  //td_add.appendChild(add)
+  cell_title.appendChild(add)
+
+  let cell_score = tr.insertCell()
+  let score = document.createTextNode(x.score.toFixed(3))
+  cell_score.appendChild(score)
+    }
+     }
+   
+   getlink(0,0);
+ </script>
+
+  
+</html>

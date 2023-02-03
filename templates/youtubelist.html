@@ -1,0 +1,108 @@
+<html>
+ <h1>display all the link！</h1>
+  
+  <div>
+    <input id="lowrange" value="10">input low </input>
+    <input id="highrange" value="50">input high </input>
+    <button id="commit_youbutelink" onclick = getyoutubelink()>get youtube link</button> 
+    <p>webaddress list:</p>
+
+    <table id="table" border="1">
+      <tr id="">
+        <td>title</td>
+        <td>score</td>
+        <td>timelength</td>
+        <td>wordsnum</td>
+      </tr>
+      
+    </table>
+    </div>
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous">
+  
+  </script>
+  
+ <script>
+  async function getyoutubelink(){
+  var low = document.getElementById("lowrange").value
+  var high = document.getElementById("highrange").value
+    const list= document.querySelectorAll("[id='data']")
+    for(x of list)
+      {
+        x.remove()
+      }
+    await getlink(low,high)
+  }
+   
+  async function getlink(low,high){
+
+  console.log("start!")
+  console.log("low is:"+low+"type is:"+typeof(low))
+  console.log("high is:" +high)
+
+  if(high == 0)
+{
+  var range = {
+  low: document.getElementById("lowrange").value,
+  high: document.getElementById("highrange").value
+}}
+    else
+  {
+    var range = {
+  low: low,
+  high: high
+}
+  }
+
+let response = await fetch('https://djangolearn1.yunfengwu.repl.co/weblist/youtubelist/', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8'
+  },
+  body: JSON.stringify(range)
+});
+  links =await response.json();
+  const tabl =document.getElementById("table")
+
+  for(let x of links["weblist"]){
+  let add_suffix = x["address"]
+  let tr = tabl.insertRow();
+  tr.id = "data"
+
+  let cell_title = tr.insertCell()
+  
+  let add = document.createElement("a")
+  add.href = add_suffix
+  if(x.title == ' ')
+  {
+    add.text = "unknow!"
+  }
+  else
+  {
+   add.text =x.title  
+  }
+  //td_add.appendChild(add)
+  cell_title.appendChild(add)
+  
+  let cell_score = tr.insertCell()
+  let line_score = document.createTextNode(x.score.toFixed(3))
+  cell_score.appendChild(line_score)
+
+  let cell_timelen = tr.insertCell()
+  let timelen = document.createTextNode(x.timelen)
+  cell_timelen.appendChild(timelen)
+
+  let cell_wordsnum = tr.insertCell()
+  let wordsnum = document.createTextNode(x.wordsnum)
+  cell_wordsnum.appendChild(wordsnum)
+    }
+     }
+   
+   getlink(0,0);
+ </script>
+ {% load static %}
+  <script src="{% static 'ytbdisplay.js'%}"></script>
+</html>

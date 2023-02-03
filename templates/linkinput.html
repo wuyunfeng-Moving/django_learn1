@@ -1,0 +1,33 @@
+<html>
+ <h1>this is idnex1!</h1>
+ <input id='order'>please input link</input>
+ <input id='index_1'>please input link</input>
+
+
+ <button onclick=commit_link()>commit</button>
+ <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  
+ <script>
+  function test() {
+    alert("test success!")
+  }
+
+  function commit_link() {
+    targetlink=document.getElementById('order').value;
+    start_index=document.getElementById('index_1').value;
+    $.ajax({
+      type:'POST',
+      url:'https://djangolearn1.yunfengwu.repl.co/weblist/linkinput/',
+data:{
+  link:targetlink,
+  start_index:start_index,
+},
+      dataType:'json',
+    });
+  }
+   
+ </script>
+</html>

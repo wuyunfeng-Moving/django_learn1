@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<h1>参数配置界面</h1>
+<h2>支持的版本: V2.1 V2.2 V2.3 </h2>
+
+<script>
+    function collectDataInPage(){
+        var data = '';
+        data=document.getElementById('setpoint').value;
+        console.log("this is collect function:%d%s",data,typeof(data));
+        data+=',';
+        return data;
+    }
+
+
+    function download(filename, text) {
+      var element = document.createElement('a');
+      var data = collectDataInPage();
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
+      element.setAttribute('download', filename);
+    
+      element.style.display = 'none';
+      document.body.appendChild(element);
+    
+      element.click();
+    
+      document.body.removeChild(element);
+    }
+    </script>
+<p>
+<input id="setpoint">设定温度</input><input id="ondif">启动回差</input><input id="offdif">关闭回差</input>
+</p>
+    
+<button type="button" onclick="download('hello.txt','jkdajk')">下载</button>
+
+</html>
+
